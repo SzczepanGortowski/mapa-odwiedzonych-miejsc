@@ -1,0 +1,37 @@
+[project]
+name = "wycieczki"
+version = "1.0.0"
+description = "Interaktywna mapa odwiedzonych miejsc (Streamlit)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "streamlit>=1.40",
+    "streamlit-folium>=0.20",
+    "folium>=0.16",
+    "pandas>=2.1",
+    "numpy>=1.26",
+    "altair>=5.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+# Potrzebne tylko do scripts/enrich_places.py — aplikacja czyta gotowe kolumny.
+enrich = ["reverse_geocoder>=1.5"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

@@ -1,0 +1,5 @@
+# Znormalizowane końce linii w repozytorium, natywne w kopii roboczej.
+* text=auto eol=lf
+
+# CSV bywa edytowany w Excelu na Windows.
+*.csv text eol=crlf

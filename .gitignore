@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# Testy i narzędzia
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Środowisko lokalne
+.env
+.streamlit/secrets.toml
+
+# Prywatne dane — historia wyjazdów zostaje na dysku, nie w repozytorium.
+# Wzorzec formatu trzyma data/pozycje.example.csv.
+data/pozycje.csv
+
+# R (pozostałości po starej wersji)
+.Rproj.user/
+.Rhistory
+.RData
+
+# System
+.DS_Store
+Thumbs.db
