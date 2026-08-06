@@ -20,6 +20,9 @@ i Streamlicie. Projekt zastępuje wcześniejszą wersję w R (`leaflet` + R Mark
   i punkty skrajne.
 - **Dane** — przeglądarka tabeli z eksportem widocznego wycinka do CSV.
 
+Plany rozwoju, pomiary wydajności i znany dług techniczny opisuje
+[IMPROVEMENTS.md](IMPROVEMENTS.md).
+
 ## Szybki start
 
 ```powershell
@@ -208,6 +211,11 @@ sprawdzających kompletność prywatnego zbioru jest wtedy pomijanych.
 
 ## Publikacja
 
-Repozytorium jest gotowe pod [Streamlit Community Cloud](https://share.streamlit.io):
-wskaż `app.py` jako plik główny — `requirements.txt` i `.streamlit/config.toml`
+Od strony konfiguracji repozytorium jest gotowe pod
+[Streamlit Community Cloud](https://share.streamlit.io) — wystarczy wskazać
+`app.py` jako plik główny, `requirements.txt` i `.streamlit/config.toml`
 zostaną wykryte automatycznie.
+
+Jest jednak haczyk: `data/pozycje.csv` nie jest w repozytorium, więc wdrożona
+w ten sposób aplikacja pokaże **13 przykładowych wizyt**, a nie prawdziwe dane.
+Możliwości omawia [IMPROVEMENTS.md](IMPROVEMENTS.md#etap-5--dystrybucja-m).
