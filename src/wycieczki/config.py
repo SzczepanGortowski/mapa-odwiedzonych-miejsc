@@ -11,6 +11,17 @@ DATA_FILE = DATA_DIR / "pozycje.csv"
 # Plik z kilkoma miejscami, trzymany w repozytorium zamiast prywatnych danych.
 EXAMPLE_FILE = DATA_DIR / "pozycje.example.csv"
 
+
+def active_data_file() -> Path:
+    """Prywatny plik z danymi, a gdy go nie ma — przykładowy z repozytorium.
+
+    Dzięki temu aplikacja startuje również tam, gdzie prywatnych danych nie ma
+    (np. Streamlit Community Cloud), pokazując kilkanaście wizyt pokazowych
+    zamiast kończyć się błędem.
+    """
+    return DATA_FILE if DATA_FILE.exists() else EXAMPLE_FILE
+
+
 APP_TITLE = "Mapa wycieczek"
 APP_ICON = "🗺️"
 

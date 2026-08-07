@@ -35,6 +35,11 @@ streamlit run app.py
 
 Aplikacja otworzy się pod adresem <http://localhost:8501>. Zatrzymanie: `Ctrl+C`.
 
+Bez `data/pozycje.csv` aplikacja nie kończy się błędem — sięga po
+`data/pozycje.example.csv` i zapowiada u góry, że pokazuje dane przykładowe.
+Dzięki temu uruchamia się także tam, gdzie prywatnych danych nie ma
+(np. Streamlit Community Cloud).
+
 Jeśli pakiety są zainstalowane globalnie (bez virtualenva), polecenie `streamlit`
 może nie być na `PATH` — wtedy uruchom:
 

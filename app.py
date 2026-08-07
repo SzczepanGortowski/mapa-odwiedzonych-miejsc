@@ -16,7 +16,13 @@ from streamlit_folium import st_folium
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
 from wycieczki import charts, metrics  # noqa: E402
-from wycieczki.config import APP_ICON, APP_TITLE, DATA_FILE, TILE_LAYERS  # noqa: E402
+from wycieczki.config import (  # noqa: E402
+    APP_ICON,
+    APP_TITLE,
+    EXAMPLE_FILE,
+    TILE_LAYERS,
+    active_data_file,
+)
 from wycieczki.data import Dataset, load_dataset  # noqa: E402
 from wycieczki.mapview import (  # noqa: E402
     COLOR_BY_GROUP,
@@ -63,8 +69,9 @@ def get_dataset(path: str, mtime: float) -> Dataset:
 
 
 def load() -> Dataset:
+    source = active_data_file()
     try:
-        return get_dataset(str(DATA_FILE), DATA_FILE.stat().st_mtime)
+        return get_dataset(str(source), source.stat().st_mtime)
     except FileNotFoundError as error:
         st.error(str(error))
         st.stop()
@@ -318,7 +325,7 @@ def render_data_tab(frame: pd.DataFrame, dataset: Dataset) -> None:
         mime="text/csv",
     )
     st.caption(
-        f"Źródło: `{DATA_FILE.name}` · {len(dataset)} wizyt po oczyszczeniu. "
+        f"Źródło: `{active_data_file().name}` · {len(dataset)} wizyt po oczyszczeniu. "
         "Nowe miejsca dopisz do pliku CSV — aplikacja odświeży się sama. "
         "Państwo i UNESCO uzupełnia `python scripts/enrich_places.py`."
     )
@@ -328,6 +335,12 @@ def render_data_tab(frame: pd.DataFrame, dataset: Dataset) -> None:
 
 def main() -> None:
     dataset = load()
+    if active_data_file() == EXAMPLE_FILE:
+        st.info(
+            "Wersja pokazowa na danych przykładowych — prywatna historia wyjazdów "
+            "nie jest częścią repozytorium. Pełny zbiór działa po wgraniu "
+            "`data/pozycje.csv` (patrz README)."
+        )
     filtered, options = sidebar_filters(dataset.frame)
 
     st.title(f"{APP_ICON} {APP_TITLE}")
