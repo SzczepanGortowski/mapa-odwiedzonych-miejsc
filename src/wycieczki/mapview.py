@@ -1,4 +1,4 @@
-"""Budowa mapy Folium — odpowiednik dawnej mapy `leaflet` z projektu R."""
+"""Budowa mapy Folium (Leaflet) z markerami wizyt."""
 
 from __future__ import annotations
 
@@ -6,7 +6,9 @@ from dataclasses import dataclass
 
 import folium
 import pandas as pd
+from branca.element import MacroElement
 from folium.plugins import HeatMap, MarkerCluster
+from folium.template import Template
 
 from .config import TILE_LAYERS
 from .palette import group_colors, year_colors
@@ -16,6 +18,46 @@ COLOR_BY_GROUP = "Grupa z pliku"
 
 # Złota obwódka wyróżniająca miejsca z obiektem UNESCO.
 UNESCO_RING = "#c9930b"
+
+# Podpowiedź do mapy, która nie przechwytuje przewijania (patrz PageFriendlyGestures).
+GESTURE_HINT = (
+    "Kółko myszy przewija stronę — kliknij mapę, żeby przybliżać kółkiem. "
+    "Na ekranie dotykowym mapę przesuwa się i przybliża dwoma palcami."
+)
+
+
+class PageFriendlyGestures(MacroElement):
+    """Mapa nie przechwytuje przewijania strony.
+
+    Leaflet domyślnie zamienia kółko myszy w zoom, a przeciągnięcie palcem
+    w przesuwanie mapy. Mapa zajmuje prawie całą wysokość okna — a w ramce
+    osadzonej na innej stronie nawet całą — więc gdy znajdzie się pod kursorem
+    albo palcem, nie da się przewinąć ani aplikacji, ani strony.
+
+    Dlatego kółko przybliża dopiero po kliknięciu mapy i tylko do chwili, gdy
+    kursor ją opuści, a na ekranach dotykowych jeden palec przewija stronę,
+    a mapę przesuwa i przybliża gest dwoma palcami.
+    """
+
+    _template = Template(
+        """
+        {% macro script(this, kwargs) %}
+        (function (map) {
+            var container = map.getContainer();
+            map.scrollWheelZoom.disable();
+            map.on("click focus", function () { map.scrollWheelZoom.enable(); });
+            map.on("blur", function () { map.scrollWheelZoom.disable(); });
+            container.addEventListener("mouseleave", function () {
+                map.scrollWheelZoom.disable();
+            });
+            var coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+            if (coarse || L.Browser.mobile) {
+                map.dragging.disable();
+            }
+        })({{ this._parent.get_name() }});
+        {% endmacro %}
+        """
+    )
 
 
 @dataclass(frozen=True)
@@ -98,7 +140,9 @@ def build_map(frame: pd.DataFrame, options: MapOptions) -> folium.Map:
         tiles=options.tiles,
         control_scale=True,
         zoom_control=True,
+        scroll_wheel_zoom=False,
     )
+    PageFriendlyGestures().add_to(fmap)
     if frame.empty:
         return fmap
 

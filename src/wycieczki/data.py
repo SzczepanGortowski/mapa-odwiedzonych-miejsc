@@ -57,8 +57,8 @@ def _to_number(series: pd.Series) -> pd.Series:
 def clean_frame(raw: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     """Normalizuje surową ramkę do kanonicznego schematu.
 
-    Zwraca oczyszczoną ramkę oraz listę komunikatów o odrzuconych wierszach —
-    w projekcie R takie wiersze po cichu lądowały na mapie jako `NA`.
+    Zwraca oczyszczoną ramkę oraz listę komunikatów o odrzuconych wierszach,
+    żeby żaden wiersz nie znikał z mapy po cichu.
     """
     issues: list[str] = []
     frame = raw.copy()

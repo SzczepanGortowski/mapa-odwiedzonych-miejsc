@@ -1,15 +1,16 @@
 # 🗺️ Mapa wycieczek
 
 Interaktywna mapa miejsc odwiedzonych w latach 2011–2026, zbudowana w Pythonie
-i Streamlicie. Projekt zastępuje wcześniejszą wersję w R (`leaflet` + R Markdown
-+ Shiny), z której przeniesiono dane — kod R nie jest już częścią repozytorium.
+i Streamlicie.
 
 ## Co potrafi
 
 - **Mapa** — 354 wizyty na mapie Leaflet, punkty kolorowane rokiem (gradient
-  chronologiczny) albo grupą przeniesioną z oryginalnego pliku CSV. Miejsca
+  chronologiczny) albo grupą z kolumny `kolor`. Miejsca
   z obiektem UNESCO mają złotą obwódkę. Do wyboru trzy podkłady, klastrowanie
-  punktów, mapa cieplna i linie tras.
+  punktów, mapa cieplna i linie tras. Mapa nie przechwytuje przewijania: kółko
+  przybliża dopiero po kliknięciu mapy, a na ekranie dotykowym mapę przesuwa
+  się dwoma palcami — także gdy aplikacja jest osadzona w ramce na innej stronie.
 - **Filtry** — zakres lat, państwo, wyszukiwanie po nazwie, ukrywanie powrotów,
   tylko miejsca z UNESCO.
 - **Statystyki** — 331 miejsc w 12 państwach, w tym **42 wpisy z Listy
@@ -63,7 +64,6 @@ python -m streamlit run app.py
 │   ├── pozycje.csv             # jedyne źródło danych (poza repozytorium)
 │   └── pozycje.example.csv     # 13 wizyt pokazujących format i przypadki brzegowe
 ├── scripts/
-│   ├── migrate_from_r.py       # jednorazowa migracja danych z projektu R
 │   └── enrich_places.py        # dopisuje państwo i UNESCO do CSV
 └── tests/                      # pytest
 ```
@@ -88,10 +88,10 @@ dwuklikiem bez kreatora importu):
 |-----------------|----------------------------------------------------|
 | `lp`            | numer porządkowy; wyznacza kolejność punktów trasy |
 | `rok`           | rok wizyty                                         |
-| `lat`           | szerokość geograficzna (w wersji R: kolumna `X`)   |
-| `lon`           | długość geograficzna (w wersji R: kolumna `Y`)     |
-| `nazwa`         | nazwa miejsca (w wersji R: `Opis`)                 |
-| `kolor`         | grupa/wyjazd — nazwa koloru markera z wersji R     |
+| `lat`           | szerokość geograficzna                             |
+| `lon`           | długość geograficzna                               |
+| `nazwa`         | nazwa miejsca                                      |
+| `kolor`         | grupa/wyjazd — nazwa koloru (`blue`, `red`, …)     |
 | `panstwo`       | państwo wyznaczone ze współrzędnych                |
 | `unesco`        | `tak` / `nie` — czy w miejscu jest obiekt UNESCO   |
 | `unesco_obiekt` | nazwy wpisów rozdzielone ` \| `, puste gdy `nie`   |
@@ -158,36 +158,6 @@ zapisujemy w jednej komórce, rozdzielone ` | `. Wpisy wspólne dla kilku miejsc
 muszą mieć **dokładnie tę samą nazwę** w każdym z nich — po niej liczone są
 unikalne wpisy. Wpis transgraniczny (Park Mużakowski) liczy się w statystyce
 obu państw.
-
-## Migracja z R
-
-Stare pliki `Pozycje — kopia*.csv` były w Windows-1250, z czterema pustymi
-kolumnami na końcu i twardymi spacjami w dwóch współrzędnych. Skrypt migracyjny
-scala oba pliki, czyści je i zapisuje kanoniczny CSV:
-
-```bash
-python scripts/migrate_from_r.py --source <katalog ze starymi CSV>
-```
-
-Nie trzeba go już uruchamiać — `data/pozycje.csv` jest wynikiem tej migracji
-(a następnie `scripts/enrich_places.py`). Skrypt został w repozytorium jako
-dokumentacja tego, skąd wzięły się dane; same pliki źródłowe z ery R nie są
-częścią repozytorium.
-Z 358 wierszy w nowszym pliku zostały 354 wizyty: usunięto jeden pusty wiersz na
-końcu oraz cztery pary wpisów identycznych co do miejsca, roku i współrzędnych
-(Gdańsk i Kruszwica 2016, Toruń i Warszawa 2017).
-
-### Czym różni się od wersji w R
-
-| wersja R                                        | wersja Python                                    |
-|-------------------------------------------------|--------------------------------------------------|
-| ścieżka na sztywno `D:\Projekty\R\Wycieczki\`   | ścieżki względne, projekt działa po skopiowaniu   |
-| aplikacja Shiny nie uruchamiała się (literówka `2019s` w `ui.R`) | filtry działają, pokrycie testami |
-| filtr lat liczony, ale odrzucany — mapa zawsze pokazywała komplet punktów | filtry realnie zawężają dane na mapie i w statystykach |
-| CSV wczytywany trzykrotnie przy każdej zmianie suwaka | jedno wczytanie z `st.cache_data` |
-| błędne współrzędne trafiały na mapę jako `NA`   | walidacja zakresów + komunikat o pominiętych wierszach |
-| tylko mapa                                       | mapa, statystyki, tabela z eksportem              |
-| brak informacji o państwie i UNESCO             | kolumny `panstwo`, `unesco`, `unesco_obiekt`      |
 
 ### Tożsamość miejsca
 

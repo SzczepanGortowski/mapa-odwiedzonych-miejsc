@@ -21,11 +21,6 @@ htmlcov/
 # Wzorzec formatu trzyma data/pozycje.example.csv.
 data/pozycje.csv
 
-# R (pozostałości po starej wersji)
-.Rproj.user/
-.Rhistory
-.RData
-
 # System
 .DS_Store
 Thumbs.db

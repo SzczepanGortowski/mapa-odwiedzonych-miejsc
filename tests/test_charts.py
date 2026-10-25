@@ -60,3 +60,17 @@ def test_map_builds(options, dataset):
 
 def test_map_handles_empty_frame(dataset):
     assert build_map(dataset.iloc[0:0], MapOptions())._repr_html_()
+
+
+def test_map_does_not_capture_page_scrolling(dataset):
+    """Kółko i jeden palec przewijają stronę; mapa reaguje na nie dopiero po kliknięciu.
+
+    Bez tego mapa osadzona w ramce na innej stronie łapie przewijanie i nie da
+    się zjechać ani w aplikacji, ani na stronie.
+    """
+    fmap = build_map(dataset, MapOptions())
+    html = fmap.get_root().render()
+    assert '"scrollWheelZoom": false' in html
+    assert f"}})({fmap.get_name()});" in html
+    assert "map.scrollWheelZoom.enable()" in html
+    assert "map.dragging.disable()" in html

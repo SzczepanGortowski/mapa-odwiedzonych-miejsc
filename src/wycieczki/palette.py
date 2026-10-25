@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .config import FALLBACK_COLOR, LEGACY_COLORS, YEAR_GRADIENT
+from .config import FALLBACK_COLOR, GROUP_COLORS, YEAR_GRADIENT
 
 
 def _hex_to_rgb(value: str) -> tuple[int, int, int]:
@@ -38,5 +38,5 @@ def year_colors(years: list[int]) -> dict[int, str]:
 
 
 def group_colors(groups: list[str]) -> dict[str, str]:
-    """Kolory grup przeniesione 1:1 z nazw markerów Leaflet z wersji w R."""
-    return {group: LEGACY_COLORS.get(group, FALLBACK_COLOR) for group in sorted(set(groups))}
+    """Kolory grup według nazw z kolumny `kolor`; nieznane dostają kolor zastępczy."""
+    return {group: GROUP_COLORS.get(group, FALLBACK_COLOR) for group in sorted(set(groups))}

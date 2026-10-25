@@ -27,6 +27,7 @@ from wycieczki.data import Dataset, load_dataset  # noqa: E402
 from wycieczki.mapview import (  # noqa: E402
     COLOR_BY_GROUP,
     COLOR_BY_YEAR,
+    GESTURE_HINT,
     UNESCO_RING,
     MapOptions,
     build_map,
@@ -37,7 +38,9 @@ st.set_page_config(
     page_title=APP_TITLE,
     page_icon=APP_ICON,
     layout="wide",
-    initial_sidebar_state="expanded",
+    # „auto” zwija panel na wąskim ekranie (telefon, ramka na innej stronie),
+    # zamiast zasłaniać nim mapę.
+    initial_sidebar_state="auto",
 )
 
 CUSTOM_CSS = """
@@ -185,6 +188,7 @@ def render_map_tab(frame: pd.DataFrame, options: MapOptions) -> None:
         st.info("Żadne miejsce nie pasuje do wybranych filtrów.")
         return
     render_legend(frame, options.color_by)
+    st.caption(GESTURE_HINT)
     st_folium(
         build_map(frame, options),
         use_container_width=True,

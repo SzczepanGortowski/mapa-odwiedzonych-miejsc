@@ -14,8 +14,8 @@ Oznaczenia nakładu pracy: **S** ≈ godzina, **M** ≈ pół dnia, **L** ≈ ki
 | | |
 |---|---|
 | Dane | 354 wizyty, 331 miejsc, 12 państw, 42 wpisy UNESCO w 45 miejscach |
-| Kod | 1 163 linii aplikacji (`app.py` + pakiet `wycieczki`), 444 testów, 298 skryptów |
-| Testy | 57 lokalnie, 56 + 1 pominięty bez prywatnych danych |
+| Kod | 1 234 linii aplikacji (`app.py` + pakiet `wycieczki`), 458 testów, 188 skryptu wzbogacającego |
+| Testy | 58 lokalnie, 57 + 1 pominięty bez prywatnych danych |
 | Zależności | streamlit, folium, pandas, altair — plus `reverse_geocoder` tylko do wzbogacania |
 
 Logika nie importuje Streamlita, więc daje się testować i przenieść do innego
@@ -167,9 +167,9 @@ wszystko, co dałoby się policzyć.
       wyjazdów, oś czasu zamiast słupków rocznych, poprawne sortowanie
       punktów trasy. Migracja jest łagodna — `rok` da się wyliczyć z daty,
       a brakujące daty mogą zostać rocznymi.
-- [ ] **Pojęcie wyjazdu** (M). Kolumna `kolor` jest reliktem po R: kolory
-      oznaczały kolejne wyjazdy, ale były używane cyklicznie, więc dziś nie
-      da się z nich odtworzyć podziału (2016 to 51 punktów w jednym kolorze
+- [ ] **Pojęcie wyjazdu** (M). Kolumna `kolor` nie zastąpi identyfikatora
+      wyjazdu: kolory oznaczały kolejne wyjazdy, ale były używane cyklicznie,
+      więc dziś nie da się z nich odtworzyć podziału (2016 to 51 punktów w jednym kolorze
       z kilku różnych wyjazdów). Jawny identyfikator wyjazdu daje:
   - poprawny dystans — obecny szacunek w
     [`metrics.route_distance_by_year`](src/wycieczki/metrics.py) sumuje
@@ -179,8 +179,9 @@ wszystko, co dałoby się policzyć.
   - sensowne rysowanie tras na mapie.
   - Przy dostępnych datach wyjazdy da się w dużej mierze wykryć
     automatycznie (przerwa > N dni), z ręczną korektą.
-- [ ] Walidacja duplikatów przy wczytaniu (S). Podczas migracji odpadły
-      4 pary identycznych wpisów; nowe mogą się wkraść niezauważone.
+- [ ] Walidacja duplikatów przy wczytaniu (S). W danych trafiały się już
+      pary identycznych wpisów (miejsce, rok, współrzędne); nowe mogą się
+      wkraść niezauważone.
 
 ### Etap 3 — Wygoda pracy z danymi (M)
 

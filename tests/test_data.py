@@ -1,4 +1,4 @@
-"""Testy czyszczenia danych — pilnują przypadków, które psuły wersję w R."""
+"""Testy czyszczenia danych: twarde spacje, przecinek dziesiętny, braki, złe współrzędne."""
 
 from __future__ import annotations
 

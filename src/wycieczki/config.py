@@ -29,9 +29,8 @@ APP_ICON = "🗺️"
 # do ciepłego bursztynu (najnowsze). Interpolowana na liczbę lat w danych.
 YEAR_GRADIENT = ["#1d4e89", "#2e8bc0", "#3fbfa3", "#f0b429", "#e8590c"]
 
-# Kolory z pliku źródłowego to nazwy markerów Leaflet z projektu R —
-# tutaj tylko ich odpowiedniki HEX, żeby zachować dotychczasowe grupowanie.
-LEGACY_COLORS = {
+# Kolumna `kolor` trzyma nazwy kolorów grup (wyjazdów) — tutaj ich odpowiedniki HEX.
+GROUP_COLORS = {
     "blue": "#2e6fdb",
     "red": "#dc3545",
     "green": "#2f9e44",
