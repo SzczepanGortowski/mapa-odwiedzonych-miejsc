@@ -7,7 +7,7 @@ i Streamlicie.
 
 - **Mapa** — 354 wizyty na mapie Leaflet, punkty kolorowane rokiem (gradient
   chronologiczny) albo grupą z kolumny `kolor`. Miejsca
-  z obiektem UNESCO mają złotą obwódkę. Do wyboru trzy podkłady, klastrowanie
+  z obiektem UNESCO mają złotą obwódkę. Podkład OpenStreetMap, klastrowanie
   punktów, mapa cieplna i linie tras. Mapa nie przechwytuje przewijania: kółko
   przybliża dopiero po kliknięciu mapy, a na ekranie dotykowym mapę przesuwa
   się dwoma palcami — także gdy aplikacja jest osadzona w ramce na innej stronie.

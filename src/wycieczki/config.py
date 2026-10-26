@@ -40,8 +40,9 @@ GROUP_COLORS = {
 }
 FALLBACK_COLOR = "#495057"
 
+# Podkłady mapy; pierwszy jest domyślny. CARTO (Positron, Dark Matter) wymaga
+# obecnie klucza API i bez niego zwraca kafelki „API KEY REQUIRED”, więc został
+# sam OpenStreetMap. Po dopisaniu drugiego podkładu panel boczny pokaże wybór.
 TILE_LAYERS = {
-    "Jasna (CartoDB Positron)": "cartodbpositron",
-    "Ciemna (CartoDB Dark Matter)": "cartodbdark_matter",
-    "Klasyczna (OpenStreetMap)": "openstreetmap",
+    "OpenStreetMap": "openstreetmap",
 }

@@ -116,7 +116,12 @@ def sidebar_filters(frame: pd.DataFrame) -> tuple[pd.DataFrame, MapOptions]:
     )
 
     st.sidebar.subheader("Mapa")
-    tile_label = st.sidebar.selectbox("Podkład", list(TILE_LAYERS), index=0)
+    # Wybór podkładu ma sens dopiero przy co najmniej dwóch warstwach.
+    tile_label = (
+        st.sidebar.selectbox("Podkład", list(TILE_LAYERS), index=0)
+        if len(TILE_LAYERS) > 1
+        else next(iter(TILE_LAYERS))
+    )
     color_by = st.sidebar.radio("Koloruj według", [COLOR_BY_YEAR, COLOR_BY_GROUP], index=0)
     radius = st.sidebar.slider("Wielkość punktów", 3, 12, 6)
     cluster = st.sidebar.toggle("Grupuj bliskie punkty", value=False)
